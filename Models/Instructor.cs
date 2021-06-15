@@ -12,6 +12,7 @@ namespace grad2021.Models
         [Display(Name = "الاسم بالكامل")]
         public string InstructorName { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "الرقم القومي")]
         public ulong InstructorNatId { get; set; }
 

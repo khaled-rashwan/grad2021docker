@@ -1,10 +1,11 @@
-using grad2021.Data;
+﻿using grad2021.Data;
 using grad2021.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,24 +29,49 @@ namespace grad2021
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //var database = Configuration["DatabaseName"] ?? "";
-            //var connectionString = $"Server={server}, {port}; Initial Catalog = {database}; User ID = {user}; Password = {password}";
-            //var connectionString = "Server=mssql-server;Database=grad2021db;User Id=sa;Password=yourStrong(!)Password";
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
+            connectionString.DataSource = Environment.GetEnvironmentVariable("DB_HOST") ?? "";
+            connectionString.UserID = Environment.GetEnvironmentVariable("DB_USER") ?? "";
+            connectionString.Password = Environment.GetEnvironmentVariable("DB_PASS") ?? "";
+            connectionString.InitialCatalog = Environment.GetEnvironmentVariable("DB_NAME") ?? "";
+            connectionString.Pooling = true;
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")== "Development")
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("LocalDbConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(connectionString.ConnectionString));
+            }
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.User.AllowedUserNameCharacters = null;
+            })
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>(options => {
+            //    options.SignIn.RequireConfirmedAccount = false;
+            //    options.User.AllowedUserNameCharacters = null;
+            //}).AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddAuthorization(options => {
+                options.AddPolicy("readpolicy",
+                    builder => builder.RequireRole("Student", "Instructor", "ControlAdmin", "SystemAdmin", "StudentAffairs"));
+                options.AddPolicy("writepolicy",
+                    builder => builder.RequireRole("SystemAdmin"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //DatabaseManagementService.MigrationInitialization(app);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

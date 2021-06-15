@@ -18,11 +18,12 @@ namespace grad2021
         {
             var host = CreateHostBuilder(args).Build();
 
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            //    db.Database.Migrate();
-            //}
+            // automatically migrate the database for production use
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                db.Database.Migrate();
+            }
 
             host.Run();
         }
@@ -31,7 +32,9 @@ namespace grad2021
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("https://*:8080");
+                    //default port for Cloud Run is 8080
+                    //the 0.0.0.0 means any ip address, no need to know the webserver ip address
+                    webBuilder.UseUrls("http://0.0.0.0:8080");
                     webBuilder.UseStartup<Startup>();
                 });
     }

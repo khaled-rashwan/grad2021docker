@@ -23,17 +23,20 @@ namespace grad2021.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -46,9 +49,15 @@ namespace grad2021.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            //[EmailAddress]
+            [MaxLength(14), MinLength(14)]
+            [RegularExpression("([0-9]+)", ErrorMessage = "الرقم القومي الذي أدخلته غير صحيح")]
+            [Display(Name = "الرقم القومي")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -60,10 +69,12 @@ namespace grad2021.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            public string Name { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["roles"] = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -71,14 +82,16 @@ namespace grad2021.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            var role = _roleManager.FindByIdAsync(Input.Name).Result;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, role.Name);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -107,6 +120,7 @@ namespace grad2021.Areas.Identity.Pages.Account
                 }
             }
 
+            ViewData["roles"] = _roleManager.Roles.ToList();
             // If we got this far, something failed, redisplay form
             return Page();
         }
