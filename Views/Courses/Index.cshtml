@@ -1,0 +1,83 @@
+﻿@model IEnumerable<grad2021.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseDescription)
+            </th><!--
+            <th>
+                @Html.DisplayNameFor(model => model.LectureWeeklyDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SectionWeeklyDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseWorkMaxScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MidTermExamMaxScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OralExamMaxScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TermExamMaxScore)
+            </th> -->
+            <th>
+                @Html.DisplayNameFor(model => model.CourseCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentCodeValue)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseDescription)
+            </td><!--
+            <td>
+                @Html.DisplayFor(modelItem => item.LectureWeeklyDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SectionWeeklyDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseWorkMaxScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MidTermExamMaxScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OralExamMaxScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TermExamMaxScore)
+            </td> -->
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentCode.DepartmentCodeValue)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CourseName">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CourseName">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CourseName">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

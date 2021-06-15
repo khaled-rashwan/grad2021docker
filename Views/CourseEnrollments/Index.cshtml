@@ -1,0 +1,53 @@
+﻿@model IEnumerable<grad2021.Models.CourseEnrollment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="LevelNameAsc">@Html.DisplayNameFor(model => model.LevelName)</a>
+</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Term)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="branchNameAsc">@Html.DisplayNameFor(model => model.Branch)</a>
+</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LevelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Term)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.BranchName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { CourseName = item.CourseName, BranchName = item.BranchName }) |
+                @Html.ActionLink("Details", "Details", new { CourseName = item.CourseName, BranchName = item.BranchName }) |
+                @Html.ActionLink("Delete", "Delete", new { CourseName = item.CourseName, BranchName = item.BranchName })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

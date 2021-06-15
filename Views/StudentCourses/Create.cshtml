@@ -1,0 +1,69 @@
+﻿@model grad2021.Models.StudentCourse
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>StudentCourse</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CourseName" class="control-label"></label>
+                <select asp-for="CourseName" class ="form-control" asp-items="ViewBag.CourseName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcademicYearID" class="control-label"></label>
+                <select asp-for="AcademicYearID" class ="form-control" asp-items="ViewBag.AcademicYearID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BranchName" class="control-label"></label>
+                <select asp-for="BranchName" class ="form-control" asp-items="ViewBag.BranchName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentNatId" class="control-label"></label>
+                <select asp-for="StudentNatId" class ="form-control" asp-items="ViewBag.StudentNatId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MidTermMark" class="control-label"></label>
+                <input asp-for="MidTermMark" class="form-control" />
+                <span asp-validation-for="MidTermMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseWorkMark" class="control-label"></label>
+                <input asp-for="CourseWorkMark" class="form-control" />
+                <span asp-validation-for="CourseWorkMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OralExamMark" class="control-label"></label>
+                <input asp-for="OralExamMark" class="form-control" />
+                <span asp-validation-for="OralExamMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinalExamMark" class="control-label"></label>
+                <input asp-for="FinalExamMark" class="form-control" />
+                <span asp-validation-for="FinalExamMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerciMark" class="control-label"></label>
+                <input asp-for="MerciMark" class="form-control" />
+                <span asp-validation-for="MerciMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

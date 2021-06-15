@@ -1,0 +1,85 @@
+﻿@model IEnumerable<grad2021.Models.StudentCourse>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<!-- This form is for search box -->
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by Course name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MidTermMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseWorkMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OralExamMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalExamMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MerciMark)
+            </th>
+            <!-- This <a> is for the hyperlink to add sort capability -->
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StudentNatId"]">@Html.DisplayNameFor(model => model.StudentEnrollment)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseEnrollment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MidTermMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseWorkMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OralExamMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalExamMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MerciMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentEnrollment.StudentNatId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseEnrollment.CourseName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.StudentCourseID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.StudentCourseID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.StudentCourseID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,74 @@
+﻿@model grad2021.Models.Course
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Course</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CourseName" />
+            <div class="form-group">
+                <label asp-for="CourseCode" class="control-label"></label>
+                <input asp-for="CourseCode" class="form-control" />
+                <span asp-validation-for="CourseCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmentCodeValue" class="control-label"></label>
+                <select asp-for="DepartmentCodeValue" class="form-control" asp-items="ViewBag.DepartmentCodeValue"></select>
+                <span asp-validation-for="DepartmentCodeValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseDescription" class="control-label"></label>
+                <input asp-for="CourseDescription" class="form-control" />
+                <span asp-validation-for="CourseDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LectureWeeklyDuration" class="control-label"></label>
+                <input asp-for="LectureWeeklyDuration" class="form-control" />
+                <span asp-validation-for="LectureWeeklyDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SectionWeeklyDuration" class="control-label"></label>
+                <input asp-for="SectionWeeklyDuration" class="form-control" />
+                <span asp-validation-for="SectionWeeklyDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseWorkMaxScore" class="control-label"></label>
+                <input asp-for="CourseWorkMaxScore" class="form-control" />
+                <span asp-validation-for="CourseWorkMaxScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MidTermExamMaxScore" class="control-label"></label>
+                <input asp-for="MidTermExamMaxScore" class="form-control" />
+                <span asp-validation-for="MidTermExamMaxScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OralExamMaxScore" class="control-label"></label>
+                <input asp-for="OralExamMaxScore" class="form-control" />
+                <span asp-validation-for="OralExamMaxScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TermExamMaxScore" class="control-label"></label>
+                <input asp-for="TermExamMaxScore" class="form-control" />
+                <span asp-validation-for="TermExamMaxScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

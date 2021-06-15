@@ -1,0 +1,46 @@
+﻿@model grad2021.Models.CourseEnrollment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CourseEnrollment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CourseName" class="control-label"></label>
+                <select asp-for="CourseName" class ="form-control" asp-items="ViewBag.CourseName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LevelName" class="control-label"></label>
+                @Html.DropDownListFor(model => model.LevelName, new SelectList(Enum.GetValues(typeof(LevelName))))
+                <span asp-validation-for="LevelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BranchName" class="control-label"></label>
+                <select asp-for="BranchName" class ="form-control" asp-items="ViewBag.BranchName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Term" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Term, new SelectList(Enum.GetValues(typeof(Term))))
+                <span asp-validation-for="Term" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

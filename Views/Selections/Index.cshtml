@@ -1,0 +1,53 @@
+﻿@model IEnumerable<grad2021.Models.Selection>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SelectionNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentEnrollment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentBranch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SelectionBranch)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelectionNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentEnrollment.StudentNatId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentBranch.BranchName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelectionBranch.BranchName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SelectionID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SelectionID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SelectionID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
